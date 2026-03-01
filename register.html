@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tantra Ganapathi Swami Vari Alayam – Arathi Darshan Registration</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      min-height: 100vh;
+      background:
+        linear-gradient(rgba(20,10,0,0.82), rgba(20,10,0,0.82)),
+        url('https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Ganapati_by_Raja_Ravi_Varma.jpg/800px-Ganapati_by_Raja_Ravi_Varma.jpg')
+        center/cover no-repeat fixed;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 30px 16px 50px;
+    }
+
+    /* ── HEADER ── */
+    .temple-header {
+      text-align: center;
+      margin-bottom: 30px;
+      animation: fadeDown 0.8s ease both;
+    }
+    .temple-header .deity-icon { font-size: 70px; line-height: 1; }
+    .temple-header h1 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(18px, 4vw, 28px);
+      color: #ffd700;
+      letter-spacing: 2px;
+      margin-top: 10px;
+      text-shadow: 0 0 18px rgba(255,200,0,0.6);
+    }
+    .temple-header h2 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(12px, 2.5vw, 16px);
+      color: #ffb347;
+      letter-spacing: 3px;
+      margin-top: 6px;
+      font-weight: 400;
+    }
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 14px auto 0;
+      max-width: 400px;
+    }
+    .divider span { flex:1; height:1px; background: linear-gradient(90deg, transparent, #ffd700, transparent); }
+    .divider em { color: #ffd700; font-style: normal; font-size: 18px; }
+
+    /* ── CARD ── */
+    .form-card {
+      background: rgba(255,255,255,0.04);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255,215,0,0.25);
+      border-radius: 20px;
+      padding: clamp(24px, 5vw, 44px);
+      max-width: 560px;
+      width: 100%;
+      box-shadow: 0 8px 48px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,215,0,0.1);
+      animation: fadeUp 0.9s ease both;
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      color: #ffd700;
+      font-size: 13px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin: 22px 0 14px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid rgba(255,215,0,0.2);
+    }
+    .section-title:first-of-type { margin-top: 0; }
+
+    /* ── FORM GROUPS ── */
+    .form-group { margin-bottom: 18px; position: relative; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #ffd98e;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+    label .req { color: #ff6b6b; margin-left: 2px; }
+
+    .input-wrap { position: relative; }
+    .input-wrap .icon {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      pointer-events: none;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.07);
+      border: 1.5px solid rgba(255,215,0,0.22);
+      border-radius: 9px;
+      color: #fff;
+      font-size: 15px;
+      font-family: 'Lato', sans-serif;
+      padding: 11px 14px 11px 40px;
+      outline: none;
+      transition: border 0.3s, box-shadow 0.3s, background 0.3s;
+    }
+    textarea { padding: 11px 14px; resize: vertical; min-height: 80px; }
+    input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.35); }
+    select option { background: #1a0a00; color: #fff; }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #ffd700;
+      background: rgba(255,215,0,0.07);
+      box-shadow: 0 0 0 3px rgba(255,215,0,0.15);
+    }
+    input.err, select.err, textarea.err {
+      border-color: #ff6b6b;
+      box-shadow: 0 0 0 3px rgba(255,107,107,0.15);
+    }
+    input.ok { border-color: #69db7c; }
+
+    .err-msg {
+      font-size: 12px;
+      color: #ff9a9a;
+      margin-top: 5px;
+      display: none;
+      padding-left: 4px;
+    }
+    .err-msg.show { display: block; }
+
+    /* ── ARATHI CARDS ── */
+    .arathi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 4px;
+    }
+    .arathi-card {
+      border: 1.5px solid rgba(255,215,0,0.22);
+      border-radius: 10px;
+      padding: 14px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s;
+      background: rgba(255,255,255,0.04);
+      user-select: none;
+    }
+    .arathi-card:hover { border-color: #ffd700; background: rgba(255,215,0,0.08); }
+    .arathi-card.selected {
+      border-color: #ffd700;
+      background: rgba(255,215,0,0.15);
+      box-shadow: 0 0 14px rgba(255,215,0,0.25);
+    }
+    .arathi-card .a-icon { font-size: 28px; display: block; margin-bottom: 6px; }
+    .arathi-card .a-name { font-size: 12px; color: #ffd98e; font-weight: 600; }
+    .arathi-card .a-time { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 3px; }
+    input[type="radio"].arathi-radio { display: none; }
+    .arathi-err { font-size:12px; color:#ff9a9a; margin-top:8px; display:none; padding-left:4px; }
+    .arathi-err.show { display:block; }
+
+    /* ── SUBMIT ── */
+    .submit-btn {
+      width: 100%;
+      margin-top: 28px;
+      padding: 15px;
+      background: linear-gradient(135deg, #b8860b, #ffd700, #b8860b);
+      background-size: 200% auto;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Cinzel', serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #1a0a00;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: background-position 0.4s, box-shadow 0.3s, transform 0.15s;
+      box-shadow: 0 4px 20px rgba(255,215,0,0.3);
+    }
+    .submit-btn:hover {
+      background-position: right center;
+      box-shadow: 0 6px 28px rgba(255,215,0,0.5);
+    }
+    .submit-btn:active { transform: scale(0.98); }
+
+    /* ── SUCCESS ── */
+    .success-box {
+      display: none;
+      margin-top: 22px;
+      background: rgba(105,219,124,0.12);
+      border: 1px solid rgba(105,219,124,0.4);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      animation: fadeUp 0.5s ease;
+    }
+    .success-box .s-icon { font-size: 40px; }
+    .success-box h3 {
+      font-family: 'Cinzel', serif;
+      color: #69db7c;
+      font-size: 16px;
+      margin: 10px 0 6px;
+      letter-spacing: 1px;
+    }
+    .success-box p { color: rgba(255,255,255,0.65); font-size: 13px; }
+
+    /* ── FOOTER NOTE ── */
+    .form-footer {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.5px;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeDown {
+      from { opacity:0; transform: translateY(-20px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(20px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+
+    @media (max-width: 420px) {
+      .arathi-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<div class="temple-header">
+ <div class="deity-icon">
+  <img 
+    src="" 
+    alt="" 
+    style="width:110px; height:110px; border-radius:50%; 
+           object-fit:cover; border:3px solid #ffd700;
+           box-shadow: 0 0 24px rgba(255,215,0,0.6);"
+  />
+</div>
+  <h1>Tantra Ganapathi Swami Vari Alayam</h1>
+  <h2>✦ Sacred Arathi Darshan Registration ✦</h2>
+  <div class="divider"><span></span><em>ॐ</em><span></span></div>
+</div>
+
+<!-- ═══ FORM CARD ═══ -->
+<div class="form-card">
+  <form id="regForm" novalidate>
+
+    <!-- PERSONAL DETAILS -->
+    <div class="section-title">🙏 Devotee Information</div>
+
+    <!-- Name -->
+    <div class="form-group">
+      <label for="name">Full Name <span class="req">*</span></label>
+      <div class="input-wrap">
+        <span class="icon">👤</span>
+        <input type="text" id="name" placeholder="Enter your full name" autocomplete="name"/>
+      </div>
+      <div class="err-msg" id="nameErr">Please enter a valid full name (letters only, min 3 chars).</div>
+    </div>
+
+    <!-- Age -->
+    <div class="form-group">
+      <label for="age">Age <span class="req">*</span></label>
+      <div class="input-wrap">
+        <span class="icon">🎂</span>
+        <input type="number" id="age" placeholder="Your age" min="1" max="120"/>
+      </div>
+      <div class="err-msg" id="ageErr">Please enter a valid age between 1 and 120.</div>
+    </div>
+
+    <!-- Address -->
+    <div class="form-group">
+      <label for="address">Address / Place You've Come From <span class="req">*</span></label>
+      <div class="input-wrap">
+        <span class="icon">📍</span>
+        <textarea id="address" placeholder="Enter your city, district, state..."></textarea>
+      </div>
+      <div class="err-msg" id="addressErr">Address must be at least 5 characters.</div>
+    </div>
+
+    <!-- Phone -->
+    <div class="form-group">
+      <label for="phone">Mobile Number <span class="req">*</span></label>
+      <div class="input-wrap">
+        <span class="icon">📱</span>
+        <input type="tel" id="phone" placeholder="10-digit mobile number" maxlength="10"/>
+      </div>
+      <div class="err-msg" id="phoneErr">Enter a valid 10-digit Indian mobile number.</div>
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+      <label for="email">Email Address <span class="req">*</span></label>
+      <div class="input-wrap">
+        <span class="icon">✉️</span>
+        <input type="email" id="email" placeholder="your@email.com" autocomplete="email"/>
+      </div>
+      <div class="err-msg" id="emailErr">Please enter a valid email address.</div>
+    </div>
+
+    <!-- ARATHI SELECTION -->
+    <div class="section-title">🔔 Select Arathi</div>
+
+    <div class="arathi-grid">
+      <label class="arathi-card" id="card-morning" onclick="selectArathi('morning')">
+        <input type="radio" class="arathi-radio" name="arathi" value="morning" id="r-morning"/>
+        <span class="a-icon">🌅</span>
+        <span class="a-name">Morning Arathi</span>
+        <span class="a-time">Kakad Aarti · 5:30 AM</span>
+      </label>
+      <label class="arathi-card" id="card-afternoon" onclick="selectArathi('afternoon')">
+        <input type="radio" class="arathi-radio" name="arathi" value="afternoon" id="r-afternoon"/>
+        <span class="a-icon">☀️</span>
+        <span class="a-name">Afternoon Arathi</span>
+        <span class="a-time">Madhyana Aarti · 12:00 PM</span>
+      </label>
+      <label class="arathi-card" id="card-night" onclick="selectArathi('night')">
+        <input type="radio" class="arathi-radio" name="arathi" value="night" id="r-night"/>
+        <span class="a-icon">🌙</span>
+        <span class="a-name">Night Arathi</span>
+        <span class="a-time">Shej Aarti · 8:30 PM</span>
+      </label>
+    </div>
+    <div class="arathi-err" id="arathiErr">Please select the Arathi you wish to attend.</div>
+
+    <!-- SUBMIT -->
+   <button type="submit" class="submit-btn">
+  🙏 &nbsp;Register for Shri Ganapathi Swami Darshan&nbsp; 🌸
+   </button>
+
+    <!-- SUCCESS -->
+    <div class="success-box" id="successBox">
+      <div class="s-icon">🎉</div>
+      <h3>Registration Successful!</h3>
+      <p>May Lord Ganapathi shower His divine blessings upon you.<br/>We look forward to welcoming you to the Alayam. 🙏</p>
+    </div>
+  </form>
+</div>
+
+<div class="form-footer">© Tantra Ganapathi Swami Vari Alayam &nbsp;|&nbsp; All Rights Reserved</div>
+
+<script>
+  let selectedArathi = '';
+
+  function selectArathi(type) {
+    selectedArathi = type;
+    ['morning','afternoon','night'].forEach(t => {
+      document.getElementById('card-' + t).classList.toggle('selected', t === type);
+    });
+    document.getElementById('r-' + type).checked = true;
+    document.getElementById('arathiErr').classList.remove('show');
+  }
+
+  function setErr(id, errId, show) {
+    const el = document.getElementById(id);
+    const er = document.getElementById(errId);
+    el.classList.toggle('err', show);
+    el.classList.toggle('ok', !show && el.value.trim() !== '');
+    er.classList.toggle('show', show);
+    return !show;
+  }
+
+  function validate() {
+    let ok = true;
+
+    const name = document.getElementById('name').value.trim();
+    ok = setErr('name','nameErr', !/^[a-zA-Z\s]{3,}$/.test(name)) && ok;
+
+    const age = parseInt(document.getElementById('age').value);
+    ok = setErr('age','ageErr', isNaN(age)||age<1||age>120) && ok;
+
+    const addr = document.getElementById('address').value.trim();
+    ok = setErr('address','addressErr', addr.length < 5) && ok;
+
+    const phone = document.getElementById('phone').value.trim();
+    ok = setErr('phone','phoneErr', !/^[6-9]\d{9}$/.test(phone)) && ok;
+
+    const email = document.getElementById('email').value.trim();
+    ok = setErr('email','emailErr', !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) && ok;
+
+    if (!selectedArathi) {
+      document.getElementById('arathiErr').classList.add('show');
+      ok = false;
+    }
+
+    return ok;
+  }
+
+  document.getElementById('regForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (validate()) {
+      const box = document.getElementById('successBox');
+      box.style.display = 'block';
+      this.reset();
+      selectedArathi = '';
+      ['morning','afternoon','night'].forEach(t =>
+        document.getElementById('card-' + t).classList.remove('selected')
+      );
+      setTimeout(() => box.style.display = 'none', 6000);
+    }
+  });
+
+  ['name','age','address','phone','email'].forEach(id => {
+    document.getElementById(id).addEventListener('input', validate);
+  });
+</script>
+</body>
+</html>
