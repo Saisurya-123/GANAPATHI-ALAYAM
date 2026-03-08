@@ -3,9 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tantra Ganapathi Swami Vari Alayam – Arathi Darshan Registration</title>
+  <title>Tantra Ganapathi Swami Vari Alayam - Arathi Darshan Registration</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lato:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <!-- EmailJS SDK for form-to-email delivery -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <style>
+    /* ── Reset & Base ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
@@ -22,13 +25,25 @@
       padding: 30px 16px 50px;
     }
 
-    /* ── HEADER ── */
+    /* ── Page Header ── */
     .temple-header {
       text-align: center;
       margin-bottom: 30px;
       animation: fadeDown 0.8s ease both;
     }
-    .temple-header .deity-icon { font-size: 70px; line-height: 1; }
+    .temple-header .deity-icon {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+    .temple-header .deity-icon img {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ffd700;
+      box-shadow: 0 0 24px rgba(255,215,0,0.6);
+    }
     .temple-header h1 {
       font-family: 'Cinzel', serif;
       font-size: clamp(18px, 4vw, 28px);
@@ -52,10 +67,18 @@
       margin: 14px auto 0;
       max-width: 400px;
     }
-    .divider span { flex:1; height:1px; background: linear-gradient(90deg, transparent, #ffd700, transparent); }
-    .divider em { color: #ffd700; font-style: normal; font-size: 18px; }
+    .divider span {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #ffd700, transparent);
+    }
+    .divider em {
+      color: #ffd700;
+      font-style: normal;
+      font-size: 18px;
+    }
 
-    /* ── CARD ── */
+    /* ── Form Card ── */
     .form-card {
       background: rgba(255,255,255,0.04);
       backdrop-filter: blur(14px);
@@ -69,6 +92,7 @@
       animation: fadeUp 0.9s ease both;
     }
 
+    /* ── Section Titles ── */
     .section-title {
       font-family: 'Cinzel', serif;
       color: #ffd700;
@@ -81,7 +105,7 @@
     }
     .section-title:first-of-type { margin-top: 0; }
 
-    /* ── FORM GROUPS ── */
+    /* ── Form Groups ── */
     .form-group { margin-bottom: 18px; position: relative; }
 
     label {
@@ -94,16 +118,22 @@
     }
     label .req { color: #ff6b6b; margin-left: 2px; }
 
+    /* ── Input Wrapper ── */
     .input-wrap { position: relative; }
-    .input-wrap .icon {
+    .input-wrap .field-icon {
       position: absolute;
       left: 13px;
       top: 50%;
       transform: translateY(-50%);
-      font-size: 16px;
+      font-size: 13px;
+      color: #ffd98e;
+      font-weight: 700;
+      font-style: normal;
       pointer-events: none;
+      letter-spacing: 0;
     }
 
+    /* ── Inputs, Selects, Textareas ── */
     input, select, textarea {
       width: 100%;
       background: rgba(255,255,255,0.07);
@@ -131,6 +161,7 @@
     }
     input.ok { border-color: #69db7c; }
 
+    /* ── Inline Validation Messages ── */
     .err-msg {
       font-size: 12px;
       color: #ff9a9a;
@@ -140,7 +171,7 @@
     }
     .err-msg.show { display: block; }
 
-    /* ── ARATHI CARDS ── */
+    /* ── Arathi Selection Grid ── */
     .arathi-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -150,27 +181,56 @@
     .arathi-card {
       border: 1.5px solid rgba(255,215,0,0.22);
       border-radius: 10px;
-      padding: 14px 8px;
+      padding: 18px 8px;
       text-align: center;
       cursor: pointer;
       transition: all 0.25s;
       background: rgba(255,255,255,0.04);
       user-select: none;
     }
-    .arathi-card:hover { border-color: #ffd700; background: rgba(255,215,0,0.08); }
+    .arathi-card:hover {
+      border-color: #ffd700;
+      background: rgba(255,215,0,0.08);
+    }
     .arathi-card.selected {
       border-color: #ffd700;
       background: rgba(255,215,0,0.15);
       box-shadow: 0 0 14px rgba(255,215,0,0.25);
     }
-    .arathi-card .a-icon { font-size: 28px; display: block; margin-bottom: 6px; }
-    .arathi-card .a-name { font-size: 12px; color: #ffd98e; font-weight: 600; }
-    .arathi-card .a-time { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 3px; }
-    input[type="radio"].arathi-radio { display: none; }
-    .arathi-err { font-size:12px; color:#ff9a9a; margin-top:8px; display:none; padding-left:4px; }
-    .arathi-err.show { display:block; }
+    .arathi-card .a-numeral {
+      display: block;
+      font-family: 'Cinzel', serif;
+      font-size: 20px;
+      color: #ffd700;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    .arathi-card .a-name {
+      font-size: 12px;
+      color: #ffd98e;
+      font-weight: 600;
+      display: block;
+    }
+    .arathi-card .a-time {
+      font-size: 11px;
+      color: rgba(255,255,255,0.45);
+      margin-top: 4px;
+      display: block;
+    }
 
-    /* ── SUBMIT ── */
+    /* Hidden radio inputs — selection managed via JS */
+    input[type="radio"].arathi-radio { display: none; }
+
+    .arathi-err {
+      font-size: 12px;
+      color: #ff9a9a;
+      margin-top: 8px;
+      display: none;
+      padding-left: 4px;
+    }
+    .arathi-err.show { display: block; }
+
+    /* ── Submit Button ── */
     .submit-btn {
       width: 100%;
       margin-top: 28px;
@@ -193,8 +253,9 @@
       box-shadow: 0 6px 28px rgba(255,215,0,0.5);
     }
     .submit-btn:active { transform: scale(0.98); }
+    .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    /* ── SUCCESS ── */
+    /* ── Success Notification ── */
     .success-box {
       display: none;
       margin-top: 22px;
@@ -205,17 +266,38 @@
       text-align: center;
       animation: fadeUp 0.5s ease;
     }
-    .success-box .s-icon { font-size: 40px; }
     .success-box h3 {
       font-family: 'Cinzel', serif;
       color: #69db7c;
       font-size: 16px;
-      margin: 10px 0 6px;
+      margin-bottom: 8px;
       letter-spacing: 1px;
     }
-    .success-box p { color: rgba(255,255,255,0.65); font-size: 13px; }
+    .success-box p {
+      color: rgba(255,255,255,0.65);
+      font-size: 13px;
+      line-height: 1.7;
+    }
 
-    /* ── FOOTER NOTE ── */
+    /* ── Error Notification ── */
+    .error-box {
+      display: none;
+      margin-top: 22px;
+      background: rgba(255,107,107,0.12);
+      border: 1px solid rgba(255,107,107,0.4);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+    .error-box h3 {
+      font-family: 'Cinzel', serif;
+      color: #ff9a9a;
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+    .error-box p { color: rgba(255,255,255,0.55); font-size: 13px; }
+
+    /* ── Page Footer ── */
     .form-footer {
       text-align: center;
       margin-top: 18px;
@@ -224,16 +306,17 @@
       letter-spacing: 0.5px;
     }
 
-    /* ── ANIMATIONS ── */
+    /* ── Keyframe Animations ── */
     @keyframes fadeDown {
-      from { opacity:0; transform: translateY(-20px); }
-      to   { opacity:1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
     @keyframes fadeUp {
-      from { opacity:0; transform: translateY(20px); }
-      to   { opacity:1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
+    /* ── Responsive: stack arathi cards on narrow screens ── */
     @media (max-width: 420px) {
       .arathi-grid { grid-template-columns: 1fr; }
     }
@@ -241,184 +324,260 @@
 </head>
 <body>
 
-<!-- ═══ HEADER ═══ -->
-<div class="temple-header">
- <div class="deity-icon">
-  <img 
-    src="" 
-    alt="" 
-    style="width:110px; height:110px; border-radius:50%; 
-           object-fit:cover; border:3px solid #ffd700;
-           box-shadow: 0 0 24px rgba(255,215,0,0.6);"
-  />
-</div>
-  <h1>Tantra Ganapathi Swami Vari Alayam</h1>
-  <h2>✦ Sacred Arathi Darshan Registration ✦</h2>
-  <div class="divider"><span></span><em>ॐ</em><span></span></div>
-</div>
+  <!-- ═══ PAGE HEADER ═══ -->
+  <div class="temple-header">
+    <div class="deity-icon">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Ganapati_by_Raja_Ravi_Varma.jpg/800px-Ganapati_by_Raja_Ravi_Varma.jpg" alt="Tantra Ganapathi Swami" />
+    </div>
+    <h1>Tantra Ganapathi Swami Vari Alayam</h1>
+    <h2>Sacred Arathi Darshan Registration</h2>
+    <div class="divider">
+      <span></span>
+      <em>Om</em>
+      <span></span>
+    </div>
+  </div>
 
-<!-- ═══ FORM CARD ═══ -->
-<div class="form-card">
-  <form id="regForm" novalidate>
+  <!-- ═══ REGISTRATION FORM CARD ═══ -->
+  <div class="form-card">
 
-    <!-- PERSONAL DETAILS -->
-    <div class="section-title">🙏 Devotee Information</div>
 
-    <!-- Name -->
-    <div class="form-group">
-      <label for="name">Full Name <span class="req">*</span></label>
-      <div class="input-wrap">
-        <span class="icon">👤</span>
-        <input type="text" id="name" placeholder="Enter your full name" autocomplete="name"/>
+
+    <form id="regForm" novalidate>
+
+      <!-- ── Section: Devotee Information ── -->
+      <div class="section-title">Devotee Information</div>
+
+      <!-- Full Name -->
+      <div class="form-group">
+        <label for="name">Full Name <span class="req">*</span></label>
+        <div class="input-wrap">
+          <input type="text" id="name" placeholder="Enter your full name" autocomplete="name" style="padding-left:14px;"/>
+        </div>
+        <div class="err-msg" id="nameErr">Please enter a valid full name (letters only, minimum 3 characters).</div>
       </div>
-      <div class="err-msg" id="nameErr">Please enter a valid full name (letters only, min 3 chars).</div>
-    </div>
 
-    <!-- Age -->
-    <div class="form-group">
-      <label for="age">Age <span class="req">*</span></label>
-      <div class="input-wrap">
-        <span class="icon">🎂</span>
-        <input type="number" id="age" placeholder="Your age" min="1" max="120"/>
+      <!-- Age -->
+      <div class="form-group">
+        <label for="age">Age <span class="req">*</span></label>
+        <div class="input-wrap">
+          <input type="number" id="age" placeholder="Your age" min="1" max="120" style="padding-left:14px;"/>
+        </div>
+        <div class="err-msg" id="ageErr">Please enter a valid age between 1 and 120.</div>
       </div>
-      <div class="err-msg" id="ageErr">Please enter a valid age between 1 and 120.</div>
-    </div>
 
-    <!-- Address -->
-    <div class="form-group">
-      <label for="address">Address / Place You've Come From <span class="req">*</span></label>
-      <div class="input-wrap">
-        <span class="icon">📍</span>
-        <textarea id="address" placeholder="Enter your city, district, state..."></textarea>
+      <!-- Address -->
+      <div class="form-group">
+        <label for="address">Address / Place You Have Come From <span class="req">*</span></label>
+        <div class="input-wrap">
+          <textarea id="address" placeholder="Enter your city, district, state..." style="padding-left:14px;"></textarea>
+        </div>
+        <div class="err-msg" id="addressErr">Address must be at least 5 characters.</div>
       </div>
-      <div class="err-msg" id="addressErr">Address must be at least 5 characters.</div>
-    </div>
 
-    <!-- Phone -->
-    <div class="form-group">
-      <label for="phone">Mobile Number <span class="req">*</span></label>
-      <div class="input-wrap">
-        <span class="icon">📱</span>
-        <input type="tel" id="phone" placeholder="10-digit mobile number" maxlength="10"/>
+      <!-- Mobile Number -->
+      <div class="form-group">
+        <label for="phone">Mobile Number <span class="req">*</span></label>
+        <div class="input-wrap">
+          <input type="tel" id="phone" placeholder="10-digit mobile number" maxlength="10" style="padding-left:14px;"/>
+        </div>
+        <div class="err-msg" id="phoneErr">Enter a valid 10-digit Indian mobile number.</div>
       </div>
-      <div class="err-msg" id="phoneErr">Enter a valid 10-digit Indian mobile number.</div>
-    </div>
 
-    <!-- Email -->
-    <div class="form-group">
-      <label for="email">Email Address <span class="req">*</span></label>
-      <div class="input-wrap">
-        <span class="icon">✉️</span>
-        <input type="email" id="email" placeholder="your@email.com" autocomplete="email"/>
+      <!-- Email Address -->
+      <div class="form-group">
+        <label for="email">Email Address <span class="req">*</span></label>
+        <div class="input-wrap">
+          <input type="email" id="email" placeholder="your@email.com" autocomplete="email" style="padding-left:14px;"/>
+        </div>
+        <div class="err-msg" id="emailErr">Please enter a valid email address.</div>
       </div>
-      <div class="err-msg" id="emailErr">Please enter a valid email address.</div>
-    </div>
 
-    <!-- ARATHI SELECTION -->
-    <div class="section-title">🔔 Select Arathi</div>
+      <!-- ── Section: Arathi Selection ── -->
+      <div class="section-title">Select Arathi</div>
 
-    <div class="arathi-grid">
-      <label class="arathi-card" id="card-morning" onclick="selectArathi('morning')">
-        <input type="radio" class="arathi-radio" name="arathi" value="morning" id="r-morning"/>
-        <span class="a-icon">🌅</span>
-        <span class="a-name">Morning Arathi</span>
-        <span class="a-time">Kakad Aarti · 5:30 AM</span>
-      </label>
-      <label class="arathi-card" id="card-afternoon" onclick="selectArathi('afternoon')">
-        <input type="radio" class="arathi-radio" name="arathi" value="afternoon" id="r-afternoon"/>
-        <span class="a-icon">☀️</span>
-        <span class="a-name">Afternoon Arathi</span>
-        <span class="a-time">Madhyana Aarti · 12:00 PM</span>
-      </label>
-      <label class="arathi-card" id="card-night" onclick="selectArathi('night')">
-        <input type="radio" class="arathi-radio" name="arathi" value="night" id="r-night"/>
-        <span class="a-icon">🌙</span>
-        <span class="a-name">Night Arathi</span>
-        <span class="a-time">Shej Aarti · 8:30 PM</span>
-      </label>
-    </div>
-    <div class="arathi-err" id="arathiErr">Please select the Arathi you wish to attend.</div>
+      <div class="arathi-grid" style="grid-template-columns: repeat(2, 1fr);">
 
-    <!-- SUBMIT -->
-   <button type="submit" class="submit-btn">
-  🙏 &nbsp;Register for Shri Ganapathi Swami Darshan&nbsp; 🌸
-   </button>
+        <!-- Pancha Harathi option -->
+        <label class="arathi-card" id="card-pancha" onclick="selectArathi('pancha')">
+          <input type="radio" class="arathi-radio" name="arathi" value="pancha" id="r-pancha"/>
+          <span class="a-numeral">I</span>
+          <span class="a-name">Pancha Harathi</span>
+          <span class="a-time">Sacred Five-Flame Offering</span>
+        </label>
 
-    <!-- SUCCESS -->
-    <div class="success-box" id="successBox">
-      <div class="s-icon">🎉</div>
-      <h3>Registration Successful!</h3>
-      <p>May Lord Ganapathi shower His divine blessings upon you.<br/>We look forward to welcoming you to the Alayam. 🙏</p>
-    </div>
-  </form>
-</div>
+        <!-- Nakshatra Harathi option -->
+        <label class="arathi-card" id="card-nakshatra" onclick="selectArathi('nakshatra')">
+          <input type="radio" class="arathi-radio" name="arathi" value="nakshatra" id="r-nakshatra"/>
+          <span class="a-numeral">II</span>
+          <span class="a-name">Nakshatra Harathi</span>
+          <span class="a-time">Star-Blessed Ritual Offering</span>
+        </label>
 
-<div class="form-footer">© Tantra Ganapathi Swami Vari Alayam &nbsp;|&nbsp; All Rights Reserved</div>
+      </div>
+      <div class="arathi-err" id="arathiErr">Please select the Arathi you wish to attend.</div>
 
-<script>
-  let selectedArathi = '';
+      <!-- Submit Button -->
+      <button type="submit" class="submit-btn" id="submitBtn">
+        Register for Shri Ganapathi Swami Darshan
+      </button>
 
-  function selectArathi(type) {
-    selectedArathi = type;
-    ['morning','afternoon','night'].forEach(t => {
-      document.getElementById('card-' + t).classList.toggle('selected', t === type);
-    });
-    document.getElementById('r-' + type).checked = true;
-    document.getElementById('arathiErr').classList.remove('show');
-  }
+      <!-- Success Confirmation -->
+      <div class="success-box" id="successBox">
+        <h3>Registration Successful</h3>
+        <p>
+          Your registration has been submitted to
+          <strong><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ebbf8a859f998a8c8a858a9b8a9f8382989c8a8682ab8c868a8287c5888486">[email&#160;protected]</a></strong>.<br/>
+          May Lord Ganapathi shower His divine blessings upon you.<br/>
+          We look forward to welcoming you to the Alayam.
+        </p>
+      </div>
 
-  function setErr(id, errId, show) {
-    const el = document.getElementById(id);
-    const er = document.getElementById(errId);
-    el.classList.toggle('err', show);
-    el.classList.toggle('ok', !show && el.value.trim() !== '');
-    er.classList.toggle('show', show);
-    return !show;
-  }
+      <!-- Submission Error -->
+      <div class="error-box" id="errorBox">
+        <h3>Submission Failed</h3>
+        <p>Your registration could not be sent. Please verify the EmailJS configuration or try again later.</p>
+      </div>
 
-  function validate() {
-    let ok = true;
+    </form>
+  </div>
 
-    const name = document.getElementById('name').value.trim();
-    ok = setErr('name','nameErr', !/^[a-zA-Z\s]{3,}$/.test(name)) && ok;
+  <!-- ═══ PAGE FOOTER ═══ -->
+  <div class="form-footer">
+    &copy; Tantra Ganapathi Swami Vari Alayam &nbsp;|&nbsp; All Rights Reserved
+  </div>
 
-    const age = parseInt(document.getElementById('age').value);
-    ok = setErr('age','ageErr', isNaN(age)||age<1||age>120) && ok;
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    /*
+     * ═══════════════════════════════════════════════════════
+     * EMAILJS CONFIGURATION
+     * Replace the three placeholder strings below with your
+     * actual credentials from emailjs.com before going live.
+     * ═══════════════════════════════════════════════════════
+     */
+    var EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';
+    var EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
+    var EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+    var TEMPLE_EMAIL        = 'Tantraganapathiswami@gmail.com';
 
-    const addr = document.getElementById('address').value.trim();
-    ok = setErr('address','addressErr', addr.length < 5) && ok;
+    /* Initialise EmailJS with the public key */
+    emailjs.init(EMAILJS_PUBLIC_KEY);
 
-    const phone = document.getElementById('phone').value.trim();
-    ok = setErr('phone','phoneErr', !/^[6-9]\d{9}$/.test(phone)) && ok;
+    /*
+     * ── Arathi Selection ─────────────────────────────────────
+     * Highlights the chosen card and stores the selected value.
+     */
+    var selectedArathi = '';
 
-    const email = document.getElementById('email').value.trim();
-    ok = setErr('email','emailErr', !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) && ok;
-
-    if (!selectedArathi) {
-      document.getElementById('arathiErr').classList.add('show');
-      ok = false;
+    function selectArathi(type) {
+      selectedArathi = type;
+      ['pancha', 'nakshatra'].forEach(function(t) {
+        document.getElementById('card-' + t).classList.toggle('selected', t === type);
+      });
+      document.getElementById('r-' + type).checked = true;
+      document.getElementById('arathiErr').classList.remove('show');
     }
 
-    return ok;
-  }
-
-  document.getElementById('regForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    if (validate()) {
-      const box = document.getElementById('successBox');
-      box.style.display = 'block';
-      this.reset();
-      selectedArathi = '';
-      ['morning','afternoon','night'].forEach(t =>
-        document.getElementById('card-' + t).classList.remove('selected')
-      );
-      setTimeout(() => box.style.display = 'none', 6000);
+    /*
+     * ── Validation Helper ────────────────────────────────────
+     * Applies error/success classes and shows or hides messages.
+     * Returns true when the field is valid.
+     */
+    function setErr(id, errId, show) {
+      var el = document.getElementById(id);
+      var er = document.getElementById(errId);
+      el.classList.toggle('err', show);
+      el.classList.toggle('ok', !show && el.value.trim() !== '');
+      er.classList.toggle('show', show);
+      return !show;
     }
-  });
 
-  ['name','age','address','phone','email'].forEach(id => {
-    document.getElementById(id).addEventListener('input', validate);
-  });
-</script>
-</body>
-</html>
+    /*
+     * ── Full Form Validation ─────────────────────────────────
+     * Validates all fields; returns true only when all pass.
+     */
+    function validate() {
+      var ok = true;
+
+      var name = document.getElementById('name').value.trim();
+      ok = setErr('name', 'nameErr', !/^[a-zA-Z\s]{3,}$/.test(name)) && ok;
+
+      var age = parseInt(document.getElementById('age').value);
+      ok = setErr('age', 'ageErr', isNaN(age) || age < 1 || age > 120) && ok;
+
+      var addr = document.getElementById('address').value.trim();
+      ok = setErr('address', 'addressErr', addr.length < 5) && ok;
+
+      var phone = document.getElementById('phone').value.trim();
+      ok = setErr('phone', 'phoneErr', !/^[6-9]\d{9}$/.test(phone)) && ok;
+
+      var email = document.getElementById('email').value.trim();
+      ok = setErr('email', 'emailErr', !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) && ok;
+
+      if (!selectedArathi) {
+        document.getElementById('arathiErr').classList.add('show');
+        ok = false;
+      }
+
+      return ok;
+    }
+
+    /*
+     * ── Form Submit Handler ──────────────────────────────────
+     * Validates the form, then sends registration data via EmailJS.
+     * Template variables must match those defined in your EmailJS template.
+     */
+    document.getElementById('regForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      if (!validate()) return;
+
+      var btn = document.getElementById('submitBtn');
+      btn.disabled    = true;
+      btn.textContent = 'Sending...';
+
+      var arathiLabels = {
+        pancha:    'Pancha Harathi (Sacred Five-Flame Offering)',
+        nakshatra: 'Nakshatra Harathi (Star-Blessed Ritual Offering)'
+      };
+
+      var templateParams = {
+        to_email:        TEMPLE_EMAIL,
+        devotee_name:    document.getElementById('name').value.trim(),
+        devotee_age:     document.getElementById('age').value.trim(),
+        devotee_address: document.getElementById('address').value.trim(),
+        devotee_phone:   document.getElementById('phone').value.trim(),
+        devotee_email:   document.getElementById('email').value.trim(),
+        arathi_choice:   arathiLabels[selectedArathi],
+        submitted_on:    new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+      };
+
+      try {
+        /* Send email via EmailJS */
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
+
+        /* Show success panel and hide error panel */
+        document.getElementById('successBox').style.display = 'block';
+        document.getElementById('errorBox').style.display   = 'none';
+
+        /* Reset form state */
+        this.reset();
+        selectedArathi = '';
+        ['pancha', 'nakshatra'].forEach(function(t) {
+          document.getElementById('card-' + t).classList.remove('selected');
+        });
+
+        /* Auto-dismiss the success message after 8 seconds */
+        setTimeout(function() {
+          document.getElementById('successBox').style.display = 'none';
+        }, 8000);
+
+      } catch (err) {
+        /* Log to console and surface error message to user */
+        console.error('EmailJS send error:', err);
+        document.getElementById('errorBox').style.display   = 'block';
+        document.getElementById('successBox').style.display = 'none';
+      }
+
+      btn.disabled    = false;
+      btn.textContent = 'Register for Shri Ganapathi Swami Darshan';
