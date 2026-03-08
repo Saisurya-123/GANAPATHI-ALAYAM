@@ -273,16 +273,82 @@
           <a href="#offerings" class="btn-outline" style="padding:11px 24px; font-size:11px;">Sponsor a Seva</a>
         </div>
       </div>
-      <div style="background: var(--parchment); padding: 32px; border: 1px solid rgba(200,149,26,0.2);">
-        <h4 style="font-family:'Cinzel',serif; font-size:12px; letter-spacing:0.15em; color:var(--saffron); text-transform:uppercase; margin-bottom:16px;">Join Our Community</h4>
-        <p style="font-size:15px; line-height:1.8; color:var(--text-mid); margin-bottom:20px;">Receive festival updates, spiritual discourses, and puja schedules in your inbox.</p>
-        <div style="display:flex; gap:8px;">
-          <input type="email" placeholder="Your email address" style="flex:1; padding:12px 16px; border:1px solid rgba(200,149,26,0.3); background:white; font-family:'EB Garamond',serif; font-size:15px; color:var(--text-dark); outline:none;">
-          <button class="btn-primary" style="padding:12px 20px; white-space:nowrap;">Join</button>
-        </div>
-      </div>
+     <div style="background: var(--parchment); padding: 32px; border: 1px solid rgba(200,149,26,0.2);">
+  <h4 style="font-family:'Cinzel',serif; font-size:12px; letter-spacing:0.15em; color:var(--saffron); text-transform:uppercase; margin-bottom:16px;">Join Our WhatsApp Community</h4>
+  <p style="font-size:15px; line-height:1.8; color:var(--text-mid); margin-bottom:20px;">Enter your mobile number to instantly join our WhatsApp community and receive festival updates, puja schedules, and spiritual discourses.</p>
+
+  <!-- WhatsApp phone input -->
+  <div style="display:flex; gap:8px; margin-bottom:12px;">
+    <div style="display:flex; align-items:center; background:white; border:1px solid rgba(200,149,26,0.3); padding:0 12px; flex-shrink:0;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" fill="#25D366" style="margin-right:6px; flex-shrink:0;">
+        <path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.469 2.027 7.774L0 32l8.468-2.002A15.93 15.93 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.267 13.267 0 01-6.748-1.833l-.484-.287-5.024 1.188 1.234-4.893-.317-.503A13.236 13.236 0 012.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.261-9.872c-.398-.199-2.354-1.161-2.719-1.294-.365-.133-.631-.199-.897.199-.265.398-1.029 1.294-1.261 1.56-.232.265-.465.299-.863.1-.398-.199-1.681-.619-3.203-1.977-1.184-1.057-1.983-2.362-2.215-2.76-.232-.398-.025-.613.174-.811.179-.178.398-.465.597-.698.199-.232.265-.398.398-.664.133-.265.066-.498-.033-.697-.1-.199-.897-2.162-1.229-2.96-.324-.777-.653-.672-.897-.684l-.764-.013c-.265 0-.696.1-.1061.498-.365.398-1.394 1.361-1.394 3.319 0 1.957 1.427 3.849 1.626 4.115.199.265 2.808 4.285 6.803 6.012.951.41 1.693.655 2.272.839.954.304 1.823.261 2.509.158.765-.114 2.354-.962 2.686-1.891.332-.929.332-1.726.232-1.891-.099-.166-.365-.265-.763-.464z"/>
+      </svg>
+      <span style="font-family:'EB Garamond',serif; font-size:15px; color:var(--text-mid);">+91</span>
     </div>
+    <input
+      type="tel"
+      id="waPhone"
+      maxlength="10"
+      placeholder="10-digit mobile number"
+      oninput="handleWaInput(this)"
+      style="flex:1; padding:12px 16px; border:1px solid rgba(200,149,26,0.3); background:white; font-family:'EB Garamond',serif; font-size:15px; color:var(--text-dark); outline:none;"
+    />
   </div>
+
+  <!-- Join button — disabled until valid number is typed -->
+  
+    id="waJoinBtn"
+    href="#"
+    target="_blank"
+    rel="noopener"
+    class="btn-primary"
+    style="display:inline-flex; align-items:center; gap:8px; padding:12px 24px; pointer-events:none; opacity:0.45; transition:opacity 0.3s; text-decoration:none; font-size:13px;"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" fill="currentColor">
+      <path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.737 5.469 2.027 7.774L0 32l8.468-2.002A15.93 15.93 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.267 13.267 0 01-6.748-1.833l-.484-.287-5.024 1.188 1.234-4.893-.317-.503A13.236 13.236 0 012.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.261-9.872c-.398-.199-2.354-1.161-2.719-1.294-.365-.133-.631-.199-.897.199-.265.398-1.029 1.294-1.261 1.56-.232.265-.465.299-.863.1-.398-.199-1.681-.619-3.203-1.977-1.184-1.057-1.983-2.362-2.215-2.76-.232-.398-.025-.613.174-.811.179-.178.398-.465.597-.698.199-.232.265-.398.398-.664.133-.265.066-.498-.033-.697-.1-.199-.897-2.162-1.229-2.96-.324-.777-.653-.672-.897-.684l-.764-.013c-.265 0-.696.1-.1061.498-.365.398-1.394 1.361-1.394 3.319 0 1.957 1.427 3.849 1.626 4.115.199.265 2.808 4.285 6.803 6.012.951.41 1.693.655 2.272.839.954.304 1.823.261 2.509.158.765-.114 2.354-.962 2.686-1.891.332-.929.332-1.726.232-1.891-.099-.166-.365-.265-.763-.464z"/>
+    </svg>
+    Join WhatsApp Community
+  </a>
+
+  <!-- Confirmation message shown after clicking join -->
+  <div id="waConfirm" style="display:none; margin-top:12px; padding:10px 14px; background:rgba(37,211,102,0.1); border:1px solid rgba(37,211,102,0.35); font-family:'EB Garamond',serif; font-size:14px; color:#1a6b35;">
+    Opening WhatsApp — you will be added to the community shortly.
+  </div>
+
+  <p style="margin-top:12px; font-size:12px; color:var(--text-light); font-style:italic;">
+    Your number is used only to add you to the temple WhatsApp community.
+  </p>
+</div>
+
+<script>
+  /*
+   * Replace YOUR_COMMUNITY_INVITE_CODE with your actual link.
+   * Get it from: WhatsApp > Your Community > Invite via Link
+   */
+  var WA_COMMUNITY_LINK = 'https://chat.whatsapp.com/YOUR_COMMUNITY_INVITE_CODE';
+
+  function handleWaInput(input) {
+    var phone = input.value.replace(/\D/g, '');
+    var btn   = document.getElementById('waJoinBtn');
+    var valid = /^[6-9]\d{9}$/.test(phone);
+
+    if (valid) {
+      btn.href            = WA_COMMUNITY_LINK;
+      btn.style.pointerEvents = 'auto';
+      btn.style.opacity   = '1';
+      btn.onclick = function() {
+        var confirm = document.getElementById('waConfirm');
+        confirm.style.display = 'block';
+        setTimeout(function() { confirm.style.display = 'none'; }, 5000);
+      };
+    } else {
+      btn.href            = '#';
+      btn.style.pointerEvents = 'none';
+      btn.style.opacity   = '0.45';
+      btn.onclick         = null;
+    }
+  }
+</script>
 </section>
 
 <!-- GALLERY -->
